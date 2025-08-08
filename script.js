@@ -141,47 +141,15 @@ function generateShareLinkForWork(workId=1, hours=6){
   const base = location.origin + location.pathname.replace(/\/portfolio\.html$/, '/');
   return base + 'protected.html?t=' + encodeURIComponent(b64);
 }
-// ---- Watermark hotfix (no HTML edits needed) ----
+// ---- Watermark hotfix (replace) ----
 (function(){
   let currentWorkId = 1;
   let wmOn = false;
 
-  function ensureControls(modal){
-    // ボタン行がなければ作る
-    if (!modal.querySelector('#wmToggle')) {
-      const controls = document.createElement('div');
-      controls.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin:8px 0';
-      controls.innerHTML = `
-        <button class="btn" id="wmToggle" type="button">透かしON</button>
-        <a class="btn" id="detailBtn" href="#">詳細ページへ</a>
-        <a class="btn" id="shareBtnFix" href="#">限定公開リンクを生成</a>
-      `;
-      const body = modal.querySelector('.body') || modal;
-      body.insertBefore(controls, body.querySelector('p') || null);
-
-      // クリック時の挙動
-      controls.querySelector('#wmToggle').addEventListener('click', ()=>{
-        wmOn = !wmOn;
-        controls.querySelector('#wmToggle').textContent = wmOn ? '透かしOFF' : '透かしON';
-        drawWithWatermark('assets/work_'+currentWorkId+'.png', wmOn);
-      });
-      controls.querySelector('#detailBtn').addEventListener('click', (e)=>{
-        e.preventDefault();
-        location.href = 'work.html?id='+currentWorkId;
-      });
-      controls.querySelector('#shareBtnFix').addEventListener('click', (e)=>{
-        e.preventDefault();
-        const url = generateShareLinkForWork ? generateShareLinkForWork(currentWorkId,6) : location.href;
-        navigator.clipboard?.writeText(url);
-        alert('限定公開リンクをコピーしました\\n' + url);
-      });
-    }
-  }
-
   function ensureCanvas(modal){
     const body = modal.querySelector('.body') || modal;
-    let img = body.querySelector('img');
     let canvas = body.querySelector('#wmCanvas');
+    const img = body.querySelector('img');
     if (!canvas){
       canvas = document.createElement('canvas');
       canvas.id = 'wmCanvas';
@@ -215,11 +183,58 @@ function generateShareLinkForWork(workId=1, hours=6){
     img.src = src;
   }
 
+  function ensureControls(modal){
+    const body = modal.querySelector('.body') || modal;
+
+    // 既存のアクション行（共有/依頼）を隠す
+    [...body.querySelectorAll(':scope > div')].forEach(div=>{
+      if (div.querySelector('a.btn') && !div.dataset.controls) {
+        div.style.display = 'none';
+      }
+    });
+
+    // 透かし＆詳細＆共有ボタンの行（なければ作成）
+    let controls = body.querySelector('[data-controls="wm"]');
+    if (!controls){
+      controls = document.createElement('div');
+      controls.dataset.controls = 'wm';
+      controls.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin:8px 0';
+      controls.innerHTML = `
+        <button class="btn" id="wmToggle" type="button">透かしON</button>
+        <a class="btn" id="detailBtn" href="#">詳細ページへ</a>
+        <a class="btn" id="shareBtnFix" href="#">限定公開リンクを生成</a>
+      `;
+      body.insertBefore(controls, body.querySelector('p.small') || null);
+
+      const wmBtn = controls.querySelector('#wmToggle');
+      wmBtn.addEventListener('click', ()=>{
+        wmOn = !wmOn;
+        wmBtn.textContent = wmOn ? '透かしOFF' : '透かしON';
+        drawWithWatermark('assets/work_'+currentWorkId+'.png', wmOn);
+      });
+
+      controls.querySelector('#detailBtn').addEventListener('click', (e)=>{
+        e.preventDefault();
+        location.href = 'work.html?id='+currentWorkId;
+      });
+
+      controls.querySelector('#shareBtnFix').addEventListener('click', (e)=>{
+        e.preventDefault();
+        const exp = Date.now() + 6*60*60*1000;
+        const payload = { exp, v: 2, workId: currentWorkId };
+        const b64 = btoa(JSON.stringify(payload));
+        const base = location.origin + location.pathname.replace(/\/portfolio\.html$/, '/');
+        const url = base + 'protected.html?t=' + encodeURIComponent(b64);
+        navigator.clipboard?.writeText(url);
+        alert('限定公開リンクをコピーしました\\n有効期限：6時間\\n' + url);
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', ()=>{
     const modal = document.getElementById('modal');
     if (!modal) return;
 
-    // サムネクリック時に発火
     document.querySelectorAll('.gallery img, .tile img').forEach(img=>{
       img.addEventListener('click', (e)=>{
         const tile = e.target.closest('[data-id]') || e.target;
