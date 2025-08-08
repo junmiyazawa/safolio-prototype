@@ -41,11 +41,45 @@
     </div>
   </section>
 
+  
+
   <section style="margin-top:18px">
-    <div class="gallery" ondragstart="return false;">
-      <div class="tile"><img src="assets/work_1.png" alt="w1"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_2.png" alt="w2"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_3.png" alt="w3"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_4.png" alt="w4"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_5.png" alt="w5"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_6.png" alt="w6"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_7.png" alt="w7"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_8.png" alt="w8"><div class="shield">学習防止</div></div><div class="tile"><img src="assets/work_9.png" alt="w9"><div class="shield">学習防止</div></div>
+    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <strong>タグ:</strong>
+      <button class="btn" data-filter="all" type="button">すべて</button>
+      <button class="btn" data-filter="キャラ" type="button">キャラ</button>
+      <button class="btn" data-filter="動物" type="button">動物</button>
+      <button class="btn" data-filter="背景" type="button">背景</button>
+      <button class="btn" data-filter="小物" type="button">小物</button>
+    </div>
+    <div class="gallery" id="gallery" ondragstart="return false;">
+      <div class="tile" data-tag="キャラ"><img src="assets/work_1.png" alt="w1"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_2.png" alt="w2"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_3.png" alt="w3"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_4.png" alt="w4"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_5.png" alt="w5"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_6.png" alt="w6"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
+      <div class="tile" data-tag="小物"><img src="assets/work_7.png" alt="w7"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">小物</div></div>
+      <div class="tile" data-tag="小物"><img src="assets/work_8.png" alt="w8"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">小物</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_9.png" alt="w9"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_10.png" alt="w10"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_11.png" alt="w11"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_12.png" alt="w12"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
+      <div class="tile" data-tag="小物"><img src="assets/work_13.png" alt="w13"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">小物</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_14.png" alt="w14"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_15.png" alt="w15"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_16.png" alt="w16"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
+      <div class="tile" data-tag="小物"><img src="assets/work_17.png" alt="w17"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">小物</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_18.png" alt="w18"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_19.png" alt="w19"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_20.png" alt="w20"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
+      <div class="tile" data-tag="小物"><img src="assets/work_21.png" alt="w21"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">小物</div></div>
+      <div class="tile" data-tag="キャラ"><img src="assets/work_22.png" alt="w22"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">キャラ</div></div>
+      <div class="tile" data-tag="動物"><img src="assets/work_23.png" alt="w23"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">動物</div></div>
+      <div class="tile" data-tag="背景"><img src="assets/work_24.png" alt="w24"><div class="shield">学習防止</div><div class="small" style="padding:6px 2px">背景</div></div>
     </div>
   </section>
+
 </main>
 
 <div id="modal" class="modal">

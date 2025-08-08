@@ -53,3 +53,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 });
+
+// --- Tag filtering ---
+function applyFilter(tag){
+  document.querySelectorAll('#gallery .tile').forEach(el=>{
+    const t = el.getAttribute('data-tag');
+    el.style.display = (tag==='all' || t===tag) ? '' : 'none';
+  });
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('button[data-filter]').forEach(btn=>{
+    btn.addEventListener('click', ()=> applyFilter(btn.getAttribute('data-filter')));
+  });
+});
