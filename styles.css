@@ -1,28 +1,25 @@
-/* ====== ベース ====== */
+/* ======== styles.css 最終版 ======== */
+
+/* ベースリセット */
 body {
-  font-family: system-ui, sans-serif;
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #f9fafb;
   color: #111827;
 }
 
 a {
   text-decoration: none;
-  color: #1d4ed8;
+  color: inherit;
 }
 
 .container {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-.small {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* ====== ヘッダー ====== */
+/* ヘッダー */
 .header {
   background: white;
   border-bottom: 1px solid #e5e7eb;
@@ -32,68 +29,68 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  height: 56px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  font-weight: bold;
 }
 
 .logo {
-  width: 28px;
-  height: 28px;
-  background: url('logo.png') no-repeat center/cover;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  background: #0ea5e9;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.small {
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 
 .nav a {
   margin-left: 16px;
   font-weight: 500;
+  color: #1e3a8a;
 }
 
-/* ====== カード ====== */
-.card {
-  background: white;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-/* ====== ボタン ====== */
+/* ボタン */
 .btn {
-  padding: 8px 14px;
-  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid #1e3a8a;
   background: white;
-  border: 1px solid #d1d5db;
+  color: #1e3a8a;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 0.9rem;
 }
 
 .btn.primary {
-  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  background: linear-gradient(90deg, #0ea5e9, #3b82f6);
   color: white;
   border: none;
 }
 
-/* ====== ピル（学習防止 ON） ====== */
-.pill {
-  background-color: #e5f1ff;
-  color: #1e40af;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  display: inline-block;
+/* カード */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
 }
 
-/* ====== ギャラリー ====== */
+/* ギャラリー */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .gallery img {
@@ -103,15 +100,12 @@ a {
   cursor: pointer;
 }
 
-/* ====== モーダル ====== */
+/* モーダル */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
   display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -120,15 +114,21 @@ a {
 .modal .content {
   background: white;
   border-radius: 8px;
-  padding: 16px;
-  max-width: 900px;
+  max-width: 800px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal .top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal .body {
+  padding: 16px;
 }
 
 .modal .close {
@@ -136,11 +136,27 @@ a {
   font-size: 1.2rem;
 }
 
-/* ====== フッター ====== */
+/* pill（学習防止ON） */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-weight: 700;
+  line-height: 1;
+  background: #e6f1ff;
+  color: #1e3a8a;
+  border: 1px solid #c7d2fe;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* フッター */
 .footer {
-  background: #f3f4f6;
-  padding: 12px;
-  font-size: 0.85rem;
-  color: #6b7280;
+  margin-top: 40px;
+  padding: 16px;
   text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
 }
