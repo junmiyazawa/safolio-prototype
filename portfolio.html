@@ -62,4 +62,32 @@
 <footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
 <script src="script.js"></script>
 <script src="works.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modal');
+    const closeBtn = modal.querySelector('.close');
+
+    // 画像クリック時に背景スクロール禁止
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('.gallery img, .tile img')) {
+        document.body.classList.add('modal-open');
+      }
+    }, true);
+
+    // モーダルを閉じる関数
+    const closeModal = () => {
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    };
+
+    // ×ボタンで閉じる
+    closeBtn.addEventListener('click', closeModal);
+
+    // 背景クリックでも閉じる
+    modal.addEventListener('click', (e) => {
+      if (e.target.id === 'modal') closeModal();
+    });
+  });
+</script>
+
 </body></html>
