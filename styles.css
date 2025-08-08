@@ -29,23 +29,26 @@ a{text-decoration:none;color:var(--brand)} .container{max-width:1100px;margin:0 
 .close{cursor:pointer;font-size:20px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted)}
 
-/* --- modal above header & scrollable --- */
+/* --- モーダルをヘッダーより前面に & 中身スクロール可能に --- */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.5);
-  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;                /* 初期は非表示 */
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 1000;           /* ヘッダーより前面に */
+  z-index: 1000;                 /* ヘッダーより前面に表示 */
 }
 
 .modal .content {
-  max-height: 90vh;        /* 画面に収まる高さに */
-  overflow: auto;          /* 中身をスクロール可能に */
+  max-height: 90vh;              /* 画面に収まる高さ */
+  overflow: auto;                /* 内容だけスクロール */
   border-radius: 12px;
+  background: #fff;
 }
 
-/* モーダル表示中は背面スクロールを止める */
-body.modal-open { overflow: hidden; }
+/* モーダル表示中は背面スクロールを禁止 */
+body.modal-open {
+  overflow: hidden;
+}
