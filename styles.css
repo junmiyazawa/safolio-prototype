@@ -28,3 +28,24 @@ a{text-decoration:none;color:var(--brand)} .container{max-width:1100px;margin:0 
 .modal .body{padding:16px}
 .close{cursor:pointer;font-size:20px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted)}
+
+/* --- modal above header & scrollable --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;           /* ヘッダーより前面に */
+}
+
+.modal .content {
+  max-height: 90vh;        /* 画面に収まる高さに */
+  overflow: auto;          /* 中身をスクロール可能に */
+  border-radius: 12px;
+}
+
+/* モーダル表示中は背面スクロールを止める */
+body.modal-open { overflow: hidden; }
