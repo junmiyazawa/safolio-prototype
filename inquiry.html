@@ -1,0 +1,30 @@
+
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — 依頼フォーム</title><meta name="robots" content="index,follow,noai,noimageai"><link rel="stylesheet" href="styles.css"></head>
+<body><header class="header"><div class="container inner">
+  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Inquiry</span></div>
+  <nav class="nav"><a href="index.html">ホーム</a><a href="portfolio.html">ポートフォリオ</a><a href="faq.html">FAQ</a><a href="contact.html">お問い合わせ</a></nav>
+</div></header>
+<main class="container"><section class="card" style="max-width:720px;margin:0 auto">
+  <h3 style="margin-top:0">制作依頼</h3><p class="small">以下の内容で依頼メールを作成します。宛先は <code>contact@example.com</code>（差し替え推奨）。</p>
+  <form onsubmit="sendMail(event)"><input type="hidden" id="workId">
+    <label>お名前</label><input required id="name" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    <label>メールアドレス</label><input required type="email" id="email" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    <label>ご依頼内容</label><textarea required id="msg" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;height:140px"></textarea>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn primary" type="submit">メールを作成</button><a class="btn" href="portfolio.html">戻る</a></div>
+  </form>
+  <p class="small" id="hint"></p>
+</section></main>
+<footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
+<script>
+var p=new URLSearchParams(location.search); var id=parseInt(p.get('id')||p.get('workId')||'0',10);
+document.getElementById('workId').value=id||''; document.getElementById('hint').textContent=id?('対象作品ID: '+id):'対象作品ID: 指定なし';
+function sendMail(e){
+  e.preventDefault();
+  var to='contact@example.com';
+  var subject=encodeURIComponent('[Safolio 制作依頼] 作品ID: '+(document.getElementById('workId').value||'なし'));
+  var body=encodeURIComponent('お名前: '+document.getElementById('name').value+'\nメール: '+document.getElementById('email').value+'\n作品ID: '+(document.getElementById('workId').value||'なし')+'\n参照URL: '+(location.origin+'/portfolio.html')+'\n\n'+document.getElementById('msg').value);
+  try{ SA.track('inquiry_send',{id:(document.getElementById('workId').value||null)}); }catch(e){}
+  location.href='mailto:'+to+'?subject='+subject+'&body='+body;
+}
+</script></body></html>

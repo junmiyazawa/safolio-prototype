@@ -1,53 +1,24 @@
 
-<!doctype html><html lang="ja"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Safolio — お問い合わせ</title>
-<link rel="stylesheet" href="styles.css">
-<meta name="robots" content="index,follow,noai,noimageai">
-</head><body>
-<header class="header">
-  <div class="container inner">
-    <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Contact</span></div>
-    <nav class="nav">
-      <a href="index.html">ホーム</a>
-      <a href="process.html">加工</a>
-      <a href="portfolio.html">ポートフォリオ</a>
-      <a href="faq.html">FAQ</a>
-    </nav>
-  </div>
-</header>
-<main class="container">
-  <section class="card" style="max-width:720px;margin:0 auto">
-    <h3 style="margin-top:0">お問い合わせ</h3>
-    <p class="small">簡易フォームです。送信するとメール作成が開きます。</p>
-    <form onsubmit="sendMail(event)">
-      <label>お名前</label>
-      <input required style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb" id="name">
-      <label>メールアドレス</label>
-      <input required type="email" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb" id="email">
-      <label>内容</label>
-      <textarea required style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;height:140px" id="msg"></textarea>
-      <div style="margin-top:14px;display:flex;gap:10px">
-        <button class="btn primary" type="submit">送信</button>
-        <a class="btn" href="index.html">戻る</a>
-      </div>
-    </form>
-  </section>
-</main>
-<footer class="footer">
-  <div class="container">© 2025 Safolio.</div>
-</footer>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — お問い合わせ</title><meta name="robots" content="index,follow,noai,noimageai"><link rel="stylesheet" href="styles.css"></head>
+<body><header class="header"><div class="container inner">
+  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Contact</span></div>
+  <nav class="nav"><a href="index.html">ホーム</a><a href="portfolio.html">ポートフォリオ</a><a href="faq.html">FAQ</a><a href="contact.html">お問い合わせ</a></nav>
+</div></header>
+<main class="container"><section class="card" style="max-width:720px;margin:0 auto">
+  <h3 style="margin-top:0">お問い合わせ</h3><p class="small">送信するとメール作成が開きます（mailto方式）。</p>
+  <form onsubmit="sendMail(event)"><label>お名前</label><input required id="name" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    <label>メールアドレス</label><input required type="email" id="email" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+    <label>内容</label><textarea required id="msg" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;height:140px"></textarea>
+    <div style="margin-top:14px;display:flex;gap:10px"><button class="btn primary" type="submit">送信</button><a class="btn" href="index.html">戻る</a></div>
+  </form>
+</section></main>
+<footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
 <script>
 function sendMail(e){
   e.preventDefault();
-  const to = 'contact@example.com'; // 差し替え推奨
-  const subject = encodeURIComponent('[Safolio 問い合わせ] ' + document.getElementById('name').value);
-  const body = encodeURIComponent(
-    'お名前: ' + document.getElementById('name').value + '\n' +
-    'メール: ' + document.getElementById('email').value + '\n\n' +
-    document.getElementById('msg').value
-  );
-  location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + body;
+  var to='contact@example.com'; var subject=encodeURIComponent('[Safolio お問い合わせ] '+document.getElementById('name').value);
+  var body=encodeURIComponent('お名前: '+document.getElementById('name').value+'\nメール: '+document.getElementById('email').value+'\n\n'+document.getElementById('msg').value);
+  location.href='mailto:'+to+'?subject='+subject+'&body='+body;
 }
-</script>
-</body></html>
+</script></body></html>

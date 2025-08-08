@@ -1,1 +1,24 @@
-// placeholder for protected.html
+
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — 限定公開ビュー</title><meta name="robots" content="noindex,noai,noimageai"><link rel="stylesheet" href="styles.css"></head>
+<body oncontextmenu="return false;"><header class="header"><div class="container inner">
+  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Limited View</span></div>
+</div></header>
+<main class="container"><section class="card">
+  <h3>限定公開ビュー</h3><p class="small">このページは期限付きリンクでのみ閲覧できます。</p>
+  <div class="preview-wrap"><img id="protectedImg" class="preview-img" src="" alt="protected" draggable="false" ondragstart="return false;"></div>
+  <p id="status" class="small"></p>
+</section></main>
+<footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
+<script>
+(function(){
+  var params=new URLSearchParams(location.search); var t=params.get('t'); var status=document.getElementById('status');
+  if(!t){ status.textContent='リンクが不正です。'; return; }
+  try{
+    var payload=JSON.parse(atob(t)); if(Date.now()>payload.exp){ status.textContent='有効期限切れです。'; document.querySelector('.preview-wrap').style.filter='blur(6px)'; return; }
+    if(payload.workId){ document.getElementById('protectedImg').src='assets/work_'+payload.workId+'.png'; }
+    var mins=Math.ceil((payload.exp-Date.now())/60000); status.textContent='有効期限まで約 '+mins+' 分';
+    try{ parent&&parent.SA&&parent.SA.track('protected_view',{id:payload.workId}); }catch(e){}
+  }catch(e){ status.textContent='リンクを検証できませんでした。'; }
+})();
+</script></body></html>

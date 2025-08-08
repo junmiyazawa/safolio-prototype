@@ -1,1 +1,23 @@
-// placeholder for metrics.html
+
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — 計測</title><meta name="robots" content="noindex,noai,noimageai"><link rel="stylesheet" href="styles.css"></head>
+<body><header class="header"><div class="container inner">
+  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Metrics</span></div>
+  <nav class="nav"><a href="index.html">ホーム</a><a href="portfolio.html">ポートフォリオ</a></nav>
+  <div><a class="btn" href="#" id="reset">リセット</a></div>
+</div></header>
+<main class="container"><section class="card">
+  <h3 style="margin:0">ローカル計測（このブラウザ）</h3>
+  <div id="stats" class="small"></div>
+  <h4>イベントログ</h4>
+  <pre id="log" style="white-space:pre-wrap;background:#f8fafc;padding:10px;border-radius:10px;border:1px solid #e5e7eb;max-height:320px;overflow:auto"></pre>
+</section></main>
+<footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
+<script>
+function fmt(ts){var d=new Date(ts);return d.toLocaleString();}
+function render(){var d=JSON.parse(localStorage.getItem('safolio_metrics')||'{}');var ev=d.events||{};
+  document.getElementById('stats').textContent=Object.keys(ev).map(function(k){return k+': '+ev[k];}).join('\n')||'(データなし)';
+  document.getElementById('log').textContent=(d.log||[]).map(function(x){return '['+fmt(x.t)+'] '+x.ev+' '+(x.data?JSON.stringify(x.data):'');}).join('\n');}
+document.getElementById('reset').addEventListener('click', function(e){e.preventDefault();localStorage.removeItem('safolio_metrics');render();});
+render();
+</script></body></html>
