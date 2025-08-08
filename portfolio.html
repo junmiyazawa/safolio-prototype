@@ -1,42 +1,54 @@
-<!doctype html><html lang="ja">
+<!doctype html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Safolio — ポートフォリオ（JSON管理）</title>
-  <meta name="robots" content="index,follow,noai,noimageai">
-  <link rel="stylesheet" href="styles.css">
-  <!-- 念のため、モーダル関連の最小スタイルを内包（styles.cssが未更新でも動く） -->
-  <style>
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none;
-      align-items: center; justify-content: center; padding: 20px; z-index: 1000; }
-    .modal .content { max-height: 90vh; overflow: auto; border-radius: 12px; background: #fff; }
-    body.modal-open { overflow: hidden; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — ポートフォリオ（JSON管理）</title>
+<meta name="robots" content="index,follow,noai,noimageai">
+<link rel="stylesheet" href="styles.css?v=4">
+
+<style>
+  /* 強制適用ピル */
+  .pill{
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    padding:6px 12px !important;
+    border-radius:9999px !important;
+    font-weight:700 !important;
+    line-height:1 !important;
+    background:#e6f1ff !important;
+    color:#1e3a8a !important;
+    border:1px solid #c7d2fe !important;
+    font-size:0.9rem !important;
+    white-space:nowrap !important;
+  }
+</style>
 </head>
 <body oncontextmenu="return false;">
-<header class="header">
-  <div class="container inner">
-    <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Portfolio</span></div>
-    <nav class="nav">
-      <a href="index.html">ホーム</a>
-      <a href="portfolio.html">ポートフォリオ</a>
-      <a href="faq.html">FAQ</a>
-      <a href="contact.html">お問い合わせ</a>
-    </nav>
-  </div>
-</header>
-
+<header class="header"><div class="container inner">
+  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Portfolio</span></div>
+  <nav class="nav">
+    <a href="index.html">ホーム</a>
+    <a href="portfolio.html">ポートフォリオ</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">お問い合わせ</a>
+  </nav>
+</div></header>
 <main class="container">
   <section class="card" style="display:flex;align-items:center;justify-content:space-between;gap:20px">
     <div><h2 style="margin:0">山田 花子</h2><p class="small">イラストレーター / 依頼受付中</p></div>
-    <div style="display:flex; gap:10px"><a class="btn primary" href="inquiry.html">依頼する</a><span class="pill">学習防止 ON</span></div>
+    <div style="display:flex; gap:12px; align-items:center">
+      <a class="btn primary" href="inquiry.html">依頼する</a>
+      <span class="pill">学習防止 ON</span>
+    </div>
   </section>
 
   <section style="margin-top:18px">
     <div class="card" id="filterBar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
       <strong>タグ:</strong>
       <button class="btn" data-filter="all" type="button">すべて</button>
-      <!-- works.js がユニークタグをここに追加します -->
+      <!-- 動的にタグを追加 -->
       <span class="small">検索</span>
       <input id="searchBox" placeholder="キーワード" style="padding:8px;border-radius:10px;border:1px solid #e5e7eb">
     </div>
@@ -44,90 +56,35 @@
   </section>
 </main>
 
-<!-- モーダル -->
 <div id="modal" class="modal">
   <div class="content">
-    <div class="top"><strong id="modalTitle">作品詳細</strong><span class="close" style="cursor:pointer;">×</span></div>
+    <div class="top"><strong id="modalTitle">作品詳細</strong><span class="close">×</span></div>
     <div class="body">
       <canvas id="wmCanvas" style="width:100%;border-radius:8px;border:1px solid #eee;max-height:70vh"></canvas>
-
-      <!-- 透かし/詳細/共有/依頼/報告 + 期限/位置/濃さ/サイズ -->
       <div data-controls="wm" style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0">
         <button class="btn" id="wmToggle" type="button">透かしON</button>
         <a class="btn" id="detailBtn" href="#">詳細ページへ</a>
         <a class="btn" id="shareBtn" href="#">限定公開リンクを生成</a>
         <a class="btn" id="inquiryBtn" href="#">依頼する</a>
-        <a class="btn" id="reportBtn" href="#">不正利用を報告</a>
-
+        <a class="btn" id="reportBtn" href="mailto:ckonsaru@gmail.com">不正利用を報告</a>
         <select id="expirySel" style="padding:8px;border-radius:10px;border:1px solid #e5e7eb">
           <option value="1">有効期限: 1h</option>
           <option value="24" selected>有効期限: 24h</option>
           <option value="168">有効期限: 7d</option>
         </select>
         <select id="wmPos" style="padding:8px;border-radius:10px;border:1px solid #e5e7eb">
-          <option value="br" selected>位置: 右下</option>
-          <option value="bl">左下</option>
-          <option value="tr">右上</option>
-          <option value="tl">左上</option>
+          <option value="br" selected>位置: 右下</option><option value="bl">左下</option><option value="tr">右上</option><option value="tl">左上</option>
         </select>
-        <span class="small">濃さ</span>
-        <input type="range" id="wmAlpha" min="0.05" max="0.6" step="0.05" value="0.25" style="width:160px">
-        <span class="small">サイズ</span>
-        <input type="range" id="wmScale" min="0.02" max="0.08" step="0.005" value="0.035" style="width:160px">
+        <span class="small">濃さ</span><input type="range" id="wmAlpha" min="0.05" max="0.6" step="0.05" value="0.25" style="width:160px">
+        <span class="small">サイズ</span><input type="range" id="wmScale" min="0.02" max="0.08" step="0.005" value="0.035" style="width:160px">
       </div>
-
       <p class="small">ダウンロードは制限されています。</p>
     </div>
   </div>
 </div>
 
 <footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
-
-<!-- 既存の機能スクリプト -->
 <script src="script.js"></script>
 <script src="works.js"></script>
-
-<!-- 最終版：モーダル制御＆mailto安定化＆重複行排除（貼るだけOK） -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('modal');
-    const closeBtn = modal.querySelector('.close');
-
-    // 画像クリックでモーダルが開くとき：背景スクロール禁止 & 重複行除去 & 報告メールの安定化
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('.gallery img, .tile img')) {
-        document.body.classList.add('modal-open');
-
-        // data-controls="wm" が重複していれば先頭以外を削除
-        const rows = [...modal.querySelectorAll('[data-controls="wm"]')];
-        if (rows.length > 1) rows.slice(1).forEach(n => n.remove());
-
-        // 「不正利用を報告」ボタンを安全な mailto に張り替え
-        const reportBtn = modal.querySelector('#reportBtn');
-        if (reportBtn && !reportBtn.dataset.fixed) {
-          reportBtn.addEventListener('click', (ev) => {
-            ev.preventDefault();
-            const id = window.currentWorkId || 1;
-            const params = new URLSearchParams({
-              subject: `[Safolio 不正利用報告] 作品ID:${id}`,
-              body: `作品ID:${id}\nURL:${location.href}`
-            });
-            const mail = `mailto:ckonsaru@gmail.com?${params.toString()}`;
-            window.open(mail, '_self');
-          }, { capture: true });
-          reportBtn.dataset.fixed = '1';
-        }
-      }
-    }, true);
-
-    // 閉じる（× と背景クリック）
-    const closeModal = () => {
-      modal.style.display = 'none';
-      document.body.classList.remove('modal-open');
-    };
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
-  });
-</script>
 </body>
 </html>
