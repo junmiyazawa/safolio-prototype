@@ -1,40 +1,89 @@
+<!doctype html><html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Safolio — 作品詳細</title>
+  <meta name="robots" content="index,follow,noai,noimageai">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body oncontextmenu="return false;">
+<header class="header">
+  <div class="container inner">
+    <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Work</span></div>
+    <nav class="nav">
+      <a href="index.html">ホーム</a>
+      <a href="portfolio.html">ポートフォリオ</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">お問い合わせ</a>
+    </nav>
+  </div>
+</header>
 
-<!doctype html><html lang="ja"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Safolio — 作品ページ（JSON）</title>
-<meta name="robots" content="index,follow,noai,noimageai">
-<link rel="stylesheet" href="styles.css">
-</head><body oncontextmenu="return false;">
-<header class="header"><div class="container inner">
-  <div class="brand"><div class="logo"></div><strong>Safolio</strong><span class="small">Work</span></div>
-  <nav class="nav">
-    <a href="index.html">ホーム</a>
-    <a href="portfolio.html">ポートフォリオ</a>
-    <a href="faq.html">FAQ</a>
-    <a href="contact.html">お問い合わせ</a>
-  </nav>
-</div></header>
 <main class="container">
-  <section class="card" style="max-width:980px;margin:0 auto">
-    <h3 style="margin-top:0" id="workTitle">作品</h3>
+  <section class="card">
+    <h2 id="workTitle">作品タイトル</h2>
     <canvas id="wmCanvas" style="width:100%;border-radius:8px;border:1px solid #eee;max-height:70vh"></canvas>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+    <div data-controls="wm" style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0">
       <button class="btn" id="wmToggle" type="button">透かしON</button>
       <a class="btn" id="shareBtn" href="#">限定公開リンクを生成</a>
-      <a class="btn primary" id="inquiryBtn" href="#">依頼する</a>
-      <a class="btn" id="reportBtnWork" href="#">不正利用を報告</a>
-      <a class="btn" href="portfolio.html">一覧へ戻る</a>
-      <select id="expirySel">
-        <option value="1">1h</option><option value="24" selected>24h</option><option value="168">7d</option>
+      <a class="btn" id="inquiryBtn" href="#">依頼する</a>
+      <a class="btn" id="reportBtn" href="#">不正利用を報告</a>
+
+      <select id="expirySel" style="padding:8px;border-radius:10px;border:1px solid #e5e7eb">
+        <option value="1">有効期限: 1h</option>
+        <option value="24" selected>有効期限: 24h</option>
+        <option value="168">有効期限: 7d</option>
       </select>
-      <select id="wmPos"><option value="br" selected>右下</option><option value="bl">左下</option><option value="tr">右上</option><option value="tl">左上</option></select>
-      <span class="small">濃さ</span><input type="range" id="wmAlpha" min="0.05" max="0.6" step="0.05" value="0.25" style="width:160px">
-      <span class="small">サイズ</span><input type="range" id="wmScale" min="0.02" max="0.08" step="0.005" value="0.035" style="width:160px">
+      <select id="wmPos" style="padding:8px;border-radius:10px;border:1px solid #e5e7eb">
+        <option value="br" selected>位置: 右下</option>
+        <option value="bl">左下</option>
+        <option value="tr">右上</option>
+        <option value="tl">左上</option>
+      </select>
+      <span class="small">濃さ</span>
+      <input type="range" id="wmAlpha" min="0.05" max="0.6" step="0.05" value="0.25" style="width:160px">
+      <span class="small">サイズ</span>
+      <input type="range" id="wmScale" min="0.02" max="0.08" step="0.005" value="0.035" style="width:160px">
     </div>
-    <p class="small" id="status"></p>
+    <p class="small">ダウンロードは制限されています。</p>
   </section>
 </main>
+
 <footer class="footer"><div class="container">© 2025 Safolio.</div></footer>
-<script src="script.js"></script>
+
 <script src="works.js"></script>
-</body></html>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 1;
+    const work = works.find(w => w.id == id) || works[0];
+    window.currentWorkId = work.id;
+    document.getElementById('workTitle').textContent = work.title;
+
+    // 不正利用報告
+    document.getElementById('reportBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const qs = new URLSearchParams({
+        subject: `[Safolio 不正利用報告] 作品ID:${work.id}`,
+        body: `作品ID:${work.id}\nURL:${location.href}`
+      });
+      location.href = `mailto:ckonsaru@gmail.com?${qs.toString()}`;
+    });
+
+    // 依頼
+    document.getElementById('inquiryBtn').href = 'inquiry.html?work=' + work.id;
+
+    // 透かし描画
+    const canvas = document.getElementById('wmCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = work.img;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+    };
+  });
+</script>
+</body>
+</html>
