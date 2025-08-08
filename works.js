@@ -1,104 +1,79 @@
-
-// === JSON loader & renderer ===
-(async function(){
-  async function loadJSON(){
-    try{
-      const res = await fetch('works.json', { cache: 'no-store' });
-      return await res.json();
-    }catch(e){
-      console.error('works.json を読み込めませんでした', e);
-      return { works: [] };
-    }
+// 作品データ（JSON管理）
+const works = [
+  {
+    id: 1,
+    title: "Work 1",
+    tags: ["キャラ", "水彩風", "かわいい"],
+    img: "https://placehold.co/800x600/png?text=Work+1",
+    detail: "この作品は○○をテーマに制作しました。依頼制作可能です。",
+    link: "work.html?id=1"
+  },
+  {
+    id: 2,
+    title: "Work 2",
+    tags: ["背景", "ファンタジー", "光"],
+    img: "https://placehold.co/800x600/png?text=Work+2",
+    detail: "光を活かしたファンタジー背景です。",
+    link: "work.html?id=2"
+  },
+  {
+    id: 3,
+    title: "Work 3",
+    tags: ["動物", "猫", "かわいい"],
+    img: "https://placehold.co/800x600/png?text=Work+3",
+    detail: "猫をテーマにしたかわいい作品。",
+    link: "work.html?id=3"
   }
-  const data = await loadJSON();
-  const list = data.works||[];
+];
 
-  // PORTFOLIO PAGE
+// ポートフォリオページでの描画処理
+document.addEventListener('DOMContentLoaded', () => {
   const gallery = document.getElementById('gallery');
-  if (gallery){
-    // build tag set
-    const tagSet = new Set();
-    list.forEach(w => (w.tags||[]).forEach(t => tagSet.add(t)));
+  if (gallery) {
+    // タグボタン作成
+    const allTags = [...new Set(works.flatMap(w => w.tags))];
     const filterBar = document.getElementById('filterBar');
-    // add dynamic tag buttons
-    tagSet.forEach(t => {
-      const b = document.createElement('button');
-      b.className='btn'; b.type='button'; b.dataset.filter=t; b.textContent=t;
-      b.addEventListener('click', ()=>applyFilter(t));
-      filterBar.insertBefore(b, document.getElementById('searchBox'));
+    allTags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.textContent = tag;
+      btn.dataset.filter = tag;
+      filterBar.insertBefore(btn, filterBar.querySelector('span.small'));
     });
 
-    // render tiles
-    function render(items){
-      gallery.innerHTML = items.map(w => `
-        <div class="tile" data-id="${w.id}" data-tag="${(w.tags||[]).join(',')}">
-          <img src="${w.src}" alt="${w.alt||('w'+w.id)}">
-          <div class="shield">学習防止</div>
-          <div class="small" style="padding:6px 2px">${(w.tags||[]).join(' / ')}</div>
-        </div>`).join('');
-      // bind clicks so modal opens (script.js expects .tile img)
-      document.querySelectorAll('.tile img').forEach(img=>{
-        img.addEventListener('click', ()=>{
-          const tile = img.closest('.tile');
-          const id = parseInt(tile.getAttribute('data-id'),10);
-          window.__currentFromJSON = list.find(x=>x.id===id) || null;
-          // populate title
-          const mt = document.getElementById('modalTitle');
-          if (mt && window.__currentFromJSON) mt.textContent = window.__currentFromJSON.title || '作品詳細';
-          // open modal (script.js handles canvas drawing & buttons)
-          const modal = document.getElementById('modal');
-          if (modal){
-            // set globals for watermark renderer
-            window.currentWorkId = id;
-            window.currentImgURL = (window.__currentFromJSON && window.__currentFromJSON.src) || `assets/work_${id}.png`;
-            // initial draw
-            if (typeof loadCanvasWithWatermark === 'function'){
-              loadCanvasWithWatermark(window.currentImgURL, undefined, false);
-            }
-            modal.style.display='flex';
-          }
+    // ギャラリー描画
+    function renderGallery(filter = 'all', keyword = '') {
+      gallery.innerHTML = '';
+      works
+        .filter(w => 
+          (filter === 'all' || w.tags.includes(filter)) &&
+          (keyword === '' || w.title.includes(keyword) || w.tags.some(t => t.includes(keyword)))
+        )
+        .forEach(w => {
+          const img = document.createElement('img');
+          img.src = w.img;
+          img.alt = w.title;
+          img.addEventListener('click', () => {
+            location.href = w.link;
+          });
+          gallery.appendChild(img);
         });
-      });
     }
-    render(list);
 
-    // search
-    const searchBox = document.getElementById('searchBox');
-    searchBox.addEventListener('input', ()=>{
-      const q = searchBox.value.trim();
-      const items = list.filter(w => {
-        const hay = (w.title||'') + ' ' + (w.description||'') + ' ' + (w.tags||[]).join(' ');
-        return hay.toLowerCase().includes(q.toLowerCase());
-      });
-      render(items);
+    // 初期描画
+    renderGallery();
+
+    // タグクリック
+    filterBar.addEventListener('click', e => {
+      if (e.target.tagName === 'BUTTON') {
+        renderGallery(e.target.dataset.filter, document.getElementById('searchBox').value);
+      }
     });
 
-    // filter function adapted to multi tag
-    window.applyFilter = function(tag){
-      if (tag==='all'){ render(list); return; }
-      render(list.filter(w => (w.tags||[]).includes(tag)));
-    };
+    // 検索
+    document.getElementById('searchBox').addEventListener('input', e => {
+      const activeTag = 'all'; // 簡易版では常にall
+      renderGallery(activeTag, e.target.value);
+    });
   }
-
-  // WORK PAGE
-  if (location.pathname.endsWith('/work.html') || location.pathname.endsWith('work.html')){
-    const p = new URLSearchParams(location.search);
-    const id = parseInt(p.get('id')||'1',10);
-    const w = list.find(x => x.id === id) || list[0];
-    if (w){
-      const title = document.getElementById('workTitle');
-      if (title) title.textContent = w.title || ('作品 '+id);
-      // draw
-      window.currentWorkId = id;
-      window.currentImgURL = w.src;
-      if (typeof loadCanvasWithWatermark === 'function'){
-        loadCanvasWithWatermark(w.src, undefined, false);
-      }
-      // inquiry/report buttons keep working (already bound in inline script or script.js)
-      const inq = document.getElementById('inquiryBtn');
-      if(inq){ inq.href = 'inquiry.html?id=' + id; }
-      const share = document.getElementById('shareBtn');
-      if(share){ share.addEventListener('click', ()=> (window.SA && SA.track('share_generate', { id })) ); }
-    }
-  }
-})();
+});
