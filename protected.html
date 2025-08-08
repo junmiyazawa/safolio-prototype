@@ -16,7 +16,7 @@
     <h3>限定公開ビュー</h3>
     <p class="small">このページは期限付きリンクでのみ閲覧でき、ダウンロードは制限されています。</p>
     <div class="preview-wrap">
-      <img class="preview-img" src="assets/work_1.png" alt="protected" draggable="false" ondragstart="return false;">
+      <img class="preview-img" src="" id="protectedImg" alt="protected" draggable="false" ondragstart="return false;">
     </div>
     <p id="status" class="small"></p>
   </section>
@@ -50,5 +50,18 @@
 })();
 // Disable context menu globally
 document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Override image based on token
+(function(){
+  try{
+    const t = new URLSearchParams(location.search).get('t');
+    const payload = JSON.parse(atob(t||''));
+    if(payload && payload.workId){
+      const img = document.getElementById('protectedImg');
+      if(img){ img.src = 'assets/work_' + payload.workId + '.png'; }
+    }
+  }catch(e){}
+})();
 </script>
+
 </body></html>
