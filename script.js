@@ -33,3 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.style.display='none'; });
   }
 });
+
+// --- Limited-access link generation ---
+function generateShareLink(hours=6){
+  const exp = Date.now() + hours*60*60*1000;
+  const payload = { exp, v: 1 };
+  const b64 = btoa(JSON.stringify(payload));
+  const url = location.origin + location.pathname.replace(/\/portfolio\.html$/, '/') + 'protected.html?t=' + encodeURIComponent(b64);
+  return url;
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const shareBtn = document.getElementById('shareBtn');
+  if (shareBtn){
+    shareBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const url = generateShareLink(6);
+      navigator.clipboard?.writeText(url);
+      alert('限定公開リンクをコピーしました\n有効期限：6時間\n' + url);
+    });
+  }
+});
