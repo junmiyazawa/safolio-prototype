@@ -1,0 +1,68 @@
+
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safolio — 学習防止加工デモ</title>
+<link rel="stylesheet" href="styles.css">
+</head><body>
+
+<header class="header">
+  <div class="container inner">
+    <div class="brand">
+      <div class="logo"></div>
+      <strong>Safolio</strong><span class="small">AI学習防止ポートフォリオ</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">ホーム</a>
+      <a href="process.html">加工</a>
+      <a href="portfolio.html">ポートフォリオ</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div>
+      <a class="btn ghost" href="process.html">デモを見る</a>
+      <a class="btn primary" href="process.html">無料で始める</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="split">
+    <section>
+      <div class="uploader" id="uploader">
+        <p><strong>ここにファイルをドラッグ＆ドロップ</strong></p>
+        <p class="small">※ デモでは見た目のハイライトのみ。アップロードは行いません。</p>
+      </div>
+      <div class="preview-wrap" style="margin-top:16px">
+        <img id="preview" class="preview-img" src="assets/preview_processed_medium.png" alt="preview">
+      </div>
+    </section>
+    <aside class="card form">
+      <h3 style="margin-top:0">加工設定</h3>
+      <label>学習防止強度：<span class="pill"><span id="strengthVal">50</span></span></label>
+      <input type="range" id="strength" min="0" max="100" value="50">
+      <label>スタイル保護</label>
+      <select style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb">
+        <option>標準（推奨）</option>
+        <option>線画重視</option>
+        <option>彩色重視</option>
+      </select>
+      <label>SNS最適化</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="pill">X</span><span class="pill">Instagram</span><span class="pill">Pixiv</span>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn primary" href="portfolio.html">安全に書き出して確認</a>
+        <a class="btn" href="portfolio.html">限定公開リンク発行</a>
+      </div>
+      <p class="small" style="margin-top:14px;color:var(--muted)">※「強」にすると見た目の差分がやや増えます。</p>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    © 2025 Safolio — 学習防止加工 / 利用規約 / プライバシー
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body></html>
